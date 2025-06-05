@@ -1,5 +1,7 @@
 package com.openclassrooms.tajmahal.ui.restaurant;
 
+import static java.lang.String.*;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -19,6 +21,11 @@ import android.widget.Toast;
 import com.openclassrooms.tajmahal.R;
 import com.openclassrooms.tajmahal.databinding.FragmentDetailsBinding;
 import com.openclassrooms.tajmahal.domain.model.Restaurant;
+import com.openclassrooms.tajmahal.domain.model.Review;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -63,6 +70,7 @@ public class DetailsFragment extends Fragment {
         setupUI(); // Sets up user interface components.
         setupViewModel(); // Prepares the ViewModel for the fragment.
         detailsViewModel.getTajMahalRestaurant().observe(requireActivity(), this::updateUIWithRestaurant); // Observes changes in the restaurant data and updates the UI accordingly.
+        detailsViewModel.getReviews().observe(requireActivity(), this::updateUIWithReviews); // Observes changes in the reviews data and updates the UI accordingly.
     }
 
     /**
@@ -110,7 +118,7 @@ public class DetailsFragment extends Fragment {
 
         binding.tvRestaurantName.setText(restaurant.getName());
         binding.tvRestaurantDay.setText(detailsViewModel.getCurrentDay(requireContext()));
-        binding.tvRestaurantType.setText(String.format("%s %s", getString(R.string.restaurant), restaurant.getType()));
+        binding.tvRestaurantType.setText(format("%s %s", getString(R.string.restaurant), restaurant.getType()));
         binding.tvRestaurantHours.setText(restaurant.getHours());
         binding.tvRestaurantAddress.setText(restaurant.getAddress());
         binding.tvRestaurantWebsite.setText(restaurant.getWebsite());
@@ -121,6 +129,34 @@ public class DetailsFragment extends Fragment {
         binding.buttonAdress.setOnClickListener(v -> openMap(restaurant.getAddress()));
         binding.buttonPhone.setOnClickListener(v -> dialPhoneNumber(restaurant.getPhoneNumber()));
         binding.buttonWebsite.setOnClickListener(v -> openBrowser(restaurant.getWebsite()));
+    }
+
+    private void updateUIWithReviews(List<Review> reviews) {
+        if (reviews == null) return;
+
+        float rating = 0f;
+        int totalReviews = reviews.size();
+
+        Map<Integer, Integer> ratingCounts = new HashMap<>();
+        for (int i = 1; i <= 5; i++) {
+            ratingCounts.put(i, 0);
+        }
+
+        for (Review review : reviews) {
+            rating += review.getRate();
+            ratingCounts.put(Math.round(review.getRate()), ratingCounts.get(review.getRate()) + 1);
+        }
+
+        rating /= totalReviews;
+        binding.tvRatingValue.setText(format("%.1f", rating));
+        binding.ratingBar.setRating(rating);
+        binding.tvReviewCount.setText(format("(%d)", reviews.size()));
+
+        binding.progressBar5Stars.setProgress((int) ((ratingCounts.get(5) / (float) totalReviews) * 100));
+        binding.progressBar4Stars.setProgress((int) ((ratingCounts.get(4) / (float) totalReviews) * 100));
+        binding.progressBar3Stars.setProgress((int) ((ratingCounts.get(3) / (float) totalReviews) * 100));
+        binding.progressBar2Stars.setProgress((int) ((ratingCounts.get(2) / (float) totalReviews) * 100));
+        binding.progressBar1Stars.setProgress((int) ((ratingCounts.get(1) / (float) totalReviews) * 100));
     }
 
     /**
