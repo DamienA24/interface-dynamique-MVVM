@@ -23,17 +23,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvRestaurantName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/jakarta_bold"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/tvRestaurantType"
-            app:layout_constraintTop_toBottomOf="@id/tvRestaurantType"
-            tools:text="Taj Mahal" />
-
-        <TextView
             android:id="@+id/tvRestaurantType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,7 +35,20 @@
             app:layout_constraintTop_toBottomOf="@id/image"
             tools:text="Restaurant Indien" />
 
+        <TextView
+            android:id="@+id/tvRestaurantName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jakarta_bold"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tvRestaurantType"
+            app:layout_constraintTop_toBottomOf="@id/tvRestaurantType"
+            tools:text="Taj Mahal" />
+
+
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -85,18 +87,147 @@
 
         </com.google.android.material.chip.ChipGroup>
 
+        <LinearLayout
+            android:id="@+id/rating_section"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvRestaurantName">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvRatingValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jakarta_bold"
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    tools:text="4.0" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:progressTint="#FFD800"
+                    android:rating="4.0"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/tvReviewCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/jakarta_regular"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    tools:text="(257)" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/rating_bars_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar5Stars"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:indeterminate="false"
+                        android:progress="80"
+                        android:progressTint="#FFD800" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar4Stars"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:indeterminate="false"
+                        android:progress="60"
+                        android:progressTint="#FFD800" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar3Stars"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:indeterminate="false"
+                        android:progress="40"
+                        android:progressTint="#FFD800" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar2Stars"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:indeterminate="false"
+                        android:progress="20"
+                        android:progressTint="#FFD800" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar1Star"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:indeterminate="false"
+                        android:progress="10"
+                        android:progressTint="#FFD800" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/leaveReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="14dp"
+                    android:fontFamily="@font/jakarta_semibold"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    tools:text="Laisser un avis" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
         <View
             android:id="@+id/separator"
             android:layout_width="0dp"
             android:layout_height="0.75dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
-
             android:background="#DADADA"
             app:layout_constraintBottom_toTopOf="@+id/tvRestaurantHours"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRestaurantName" />
+            app:layout_constraintTop_toBottomOf="@+id/rating_section" />
 
         <ImageView
             android:id="@+id/icon_hours"
