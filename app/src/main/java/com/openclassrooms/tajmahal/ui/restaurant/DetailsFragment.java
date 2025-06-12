@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -22,6 +24,8 @@ import com.openclassrooms.tajmahal.R;
 import com.openclassrooms.tajmahal.databinding.FragmentDetailsBinding;
 import com.openclassrooms.tajmahal.domain.model.Restaurant;
 import com.openclassrooms.tajmahal.domain.model.Review;
+
+import com.openclassrooms.tajmahal.ui.restaurant.ReviewsFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +135,10 @@ public class DetailsFragment extends Fragment {
         binding.buttonWebsite.setOnClickListener(v -> openBrowser(restaurant.getWebsite()));
     }
 
+    /**
+     * Updates the UI components with the provided reviews data.
+     * @param reviews The list of reviews to be displayed.
+     */
     private void updateUIWithReviews(List<Review> reviews) {
         if (reviews == null) return;
 
@@ -157,6 +165,7 @@ public class DetailsFragment extends Fragment {
         binding.progressBar3Stars.setProgress((int) ((ratingCounts.get(3) / (float) totalReviews) * 100));
         binding.progressBar2Stars.setProgress((int) ((ratingCounts.get(2) / (float) totalReviews) * 100));
         binding.progressBar1Stars.setProgress((int) ((ratingCounts.get(1) / (float) totalReviews) * 100));
+        binding.leaveReview.setOnClickListener(v -> leaveReview());
     }
 
     /**
@@ -205,6 +214,14 @@ public class DetailsFragment extends Fragment {
         } else {
             Toast.makeText(requireActivity(), R.string.no_browser_found, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void leaveReview() {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ReviewsFragment reviewsFragment = ReviewsFragment.newInstance();
+        fragmentTransaction.add(R.id.container, reviewsFragment);
+        fragmentTransaction.commit();
     }
 
     public static DetailsFragment newInstance() {
