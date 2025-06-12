@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="Nom de l'Auteur"
             android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"
+            android:textColor="#666666"
             android:textSize="16sp"/>
 
         <RatingBar
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Ceci est le commentaire de l'avis."
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColor="#666666"
             android:textSize="14sp"
             android:lineSpacingExtra="2dp"/>
     </LinearLayout>

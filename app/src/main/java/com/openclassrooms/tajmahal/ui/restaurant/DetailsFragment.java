@@ -216,11 +216,15 @@ public class DetailsFragment extends Fragment {
         }
     }
 
+    /**
+     * Opens the {@link ReviewsFragment} to leave a review.
+     */
     private void leaveReview() {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ReviewsFragment reviewsFragment = ReviewsFragment.newInstance();
-        fragmentTransaction.add(R.id.container, reviewsFragment);
+        fragmentTransaction.replace(R.id.container, reviewsFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
