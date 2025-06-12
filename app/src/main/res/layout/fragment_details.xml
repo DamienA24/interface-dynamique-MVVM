@@ -210,9 +210,9 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="14dp"
                     android:fontFamily="@font/jakarta_semibold"
-                    android:textColor="#000000"
+                    android:textColor="#666"
                     android:textSize="12sp"
-                    tools:text="Laisser un avis" />
+                    android:text="Laisser un avis" />
 
             </LinearLayout>
 
