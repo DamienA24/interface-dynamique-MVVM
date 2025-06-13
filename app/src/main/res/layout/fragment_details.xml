@@ -42,6 +42,7 @@
             android:fontFamily="@font/jakarta_bold"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="#333333"
             app:layout_constraintStart_toStartOf="@id/tvRestaurantType"
             app:layout_constraintTop_toBottomOf="@id/tvRestaurantType"
             tools:text="Taj Mahal" />
