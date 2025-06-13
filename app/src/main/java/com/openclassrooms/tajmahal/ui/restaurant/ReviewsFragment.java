@@ -12,11 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.bumptech.glide.Glide;
 import com.openclassrooms.tajmahal.R;
 import com.openclassrooms.tajmahal.databinding.FragmentDetailsBinding;
 import com.openclassrooms.tajmahal.databinding.FragmentReviewsBinding;
@@ -37,6 +39,7 @@ public class ReviewsFragment extends Fragment {
     private FragmentReviewsBinding binding;
     private ReviewsViewModel reviewsViewModel;
     private ReviewAdapter reviewAdapter;
+    private String currentAvatarUrl;
     public static ReviewsFragment newInstance() {
         return new ReviewsFragment();
     }
@@ -84,7 +87,9 @@ public class ReviewsFragment extends Fragment {
         setupUI();
         setupRecyclerView();
         observeViewModel();
+        setupImgSrcAvatar();
         setupBackButton();
+        setupAddReviewButton();
     }
 
     /**
@@ -131,5 +136,59 @@ public class ReviewsFragment extends Fragment {
      */
     private void setupBackButton() {
         binding.backButton.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+    }
+
+    /**
+     * Sets up the "Add Review" button to add a new review.
+     */
+    private void setupAddReviewButton() {
+        binding.buttonAddReview.setOnClickListener(v -> addReview());
+    }
+    /**
+     * Sets up the avatar image source using Glide to load an image from a URL.
+     */
+    private void setupImgSrcAvatar() {
+        currentAvatarUrl = "https://xsgames.co/randomusers/assets/avatars/female/73.jpg";
+
+        // Assurez-vous que le contexte n'est pas null.
+        // Dans onViewCreated et après, getContext() ou requireContext() devrait être sûr.
+        if (getContext() == null) {
+            return; // Ou gérer l'erreur autrement
+        }
+
+        Glide.with(this)
+                .load(currentAvatarUrl)
+                .placeholder(R.drawable.main_avatar)
+                .error(R.drawable.main_avatar)
+                .into(binding.profilePicture);
+    }
+
+
+    /**
+     * Adds a new review to the list of reviews.
+     * recover d
+     */
+    private void addReview() {
+        String username = binding.textViewReviewUsername.getText().toString();
+        int rate = Integer.parseInt(binding.ratingBarNewReview.getProgress() + "");
+        String comment = binding.editTextReviewComment.getText().toString();
+
+        if(comment.isEmpty() || rate == 0){
+            return;
+        }
+
+
+        Review review = new Review(username, currentAvatarUrl, comment, rate);
+        reviewsViewModel.addReview(review);
+        cleanInputs();
+    }
+
+    /**
+     * Cleans the input fields after adding a new review.
+     */
+    private void cleanInputs() {
+        binding.textViewReviewUsername.setText("");
+        binding.editTextReviewComment.setText("");
+        binding.ratingBarNewReview.setProgress(0);
     }
 }

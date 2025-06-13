@@ -47,7 +47,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         if (newReviewList != null) {
             this.reviewList.addAll(newReviewList);
         }
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     /**

@@ -35,4 +35,12 @@ public class ReviewsViewModel extends ViewModel {
     public LiveData<List<Review>> getReviews() {
         return restaurantRepository.getReviews();
     }
+
+    /**
+     * Adds a new review to the list of reviews.
+     * @param review The review to be added.
+     */
+    public void addReview(Review review) {
+        restaurantRepository.addReview(review);
+    }
 }
