@@ -166,21 +166,16 @@ public class ReviewsFragment extends Fragment {
 
     /**
      * Adds a new review to the list of reviews.
-     * recover d
      */
     private void addReview() {
         String username = binding.textViewReviewUsername.getText().toString();
-        int rate = Integer.parseInt(binding.ratingBarNewReview.getProgress() + "");
+        int rate = binding.ratingBarNewReview.getProgress();
         String comment = binding.editTextReviewComment.getText().toString();
 
-        if(comment.isEmpty() || rate == 0){
-            return;
+        boolean reviewProcessed = reviewsViewModel.addReview(username,currentAvatarUrl, rate, comment);
+        if(reviewProcessed) {
+            cleanInputs();
         }
-
-
-        Review review = new Review(username, currentAvatarUrl, comment, rate);
-        reviewsViewModel.addReview(review);
-        cleanInputs();
     }
 
     /**

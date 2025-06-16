@@ -1,5 +1,7 @@
 package com.openclassrooms.tajmahal.ui.restaurant;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -38,9 +40,29 @@ public class ReviewsViewModel extends ViewModel {
 
     /**
      * Adds a new review to the list of reviews.
-     * @param review The review to be added.
+     * @param username The username of the reviewer.
+     * @param avatarUrl The URL of the reviewer's avatar.
+     * @param rate The rating given by the reviewer.
+     * @param comment The comment given by the reviewer.
      */
-    public void addReview(Review review) {
-        restaurantRepository.addReview(review);
+    public boolean addReview(String username, String avatarUrl, int rate, String comment) {
+        if (comment == null || comment.isEmpty()) {
+            Log.d("ReviewsViewModel", "Comment cannot be empty.");
+            return false;
+        }
+        if (rate == 0) {
+            Log.d("ReviewsViewModel", "Rating cannot be 0.");
+            return false;
+        }
+
+        Review newReview = new Review(username, avatarUrl, comment, rate);
+        try {
+            restaurantRepository.addReview(newReview);
+            Log.d("ReviewsViewModel", "Review added successfully for user: " + username);
+            return true;
+        } catch (Exception e) {
+            Log.e("ReviewsViewModel", "Error adding review to repository for user: " + username, e);
+            return false;
+        }
     }
 }
