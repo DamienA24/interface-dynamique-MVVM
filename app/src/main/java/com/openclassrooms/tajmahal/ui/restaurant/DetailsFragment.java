@@ -74,7 +74,7 @@ public class DetailsFragment extends Fragment {
         setupUI(); // Sets up user interface components.
         setupViewModel(); // Prepares the ViewModel for the fragment.
         detailsViewModel.getTajMahalRestaurant().observe(requireActivity(), this::updateUIWithRestaurant); // Observes changes in the restaurant data and updates the UI accordingly.
-        detailsViewModel.getReviews().observe(requireActivity(), this::updateUIWithReviews); // Observes changes in the reviews data and updates the UI accordingly.
+        detailsViewModel.getReviewStats().observe(requireActivity(), this::updateUIWithReviews); // Observes changes in the reviews data and updates the UI accordingly.
     }
 
     /**
@@ -137,34 +137,32 @@ public class DetailsFragment extends Fragment {
 
     /**
      * Updates the UI components with the provided reviews data.
-     * @param reviews The list of reviews to be displayed.
+     * @param reviewStats The review stats object containing details to be displayed.
+     * @see DetailsViewModel.ReviewStatsUIModel for more information about the data structure.
      */
-    private void updateUIWithReviews(List<Review> reviews) {
-        if (reviews == null) return;
-
-        float rating = 0f;
-        int totalReviews = reviews.size();
-
-        Map<Integer, Integer> ratingCounts = new HashMap<>();
-        for (int i = 1; i <= 5; i++) {
-            ratingCounts.put(i, 0);
+    private void updateUIWithReviews(DetailsViewModel.ReviewStatsUIModel reviewStats) {
+        if (reviewStats == null) {
+            binding.tvRatingValue.setText("N/A");
+            binding.ratingBar.setRating(0);
+            binding.tvReviewCount.setText("(0)");
+            binding.progressBar5Stars.setProgress(0);
+            binding.progressBar4Stars.setProgress(0);
+            binding.progressBar3Stars.setProgress(0);
+            binding.progressBar2Stars.setProgress(0);
+            binding.progressBar1Stars.setProgress(0);
+            return;
         }
 
-        for (Review review : reviews) {
-            rating += review.getRate();
-            ratingCounts.put(Math.round(review.getRate()), ratingCounts.get(review.getRate()) + 1);
-        }
+        binding.tvRatingValue.setText(format("%.1f", reviewStats.averageRating));
+        binding.ratingBar.setRating(reviewStats.averageRating);
+        binding.tvReviewCount.setText(format("(%d)", reviewStats.reviewListSize));
 
-        rating /= totalReviews;
-        binding.tvRatingValue.setText(format("%.1f", rating));
-        binding.ratingBar.setRating(rating);
-        binding.tvReviewCount.setText(format("(%d)", reviews.size()));
+        binding.progressBar5Stars.setProgress(reviewStats.getPercentageForStar(5));
+        binding.progressBar4Stars.setProgress(reviewStats.getPercentageForStar(4));
+        binding.progressBar3Stars.setProgress(reviewStats.getPercentageForStar(3));
+        binding.progressBar2Stars.setProgress(reviewStats.getPercentageForStar(2));
+        binding.progressBar1Stars.setProgress(reviewStats.getPercentageForStar(1));
 
-        binding.progressBar5Stars.setProgress((int) ((ratingCounts.get(5) / (float) totalReviews) * 100));
-        binding.progressBar4Stars.setProgress((int) ((ratingCounts.get(4) / (float) totalReviews) * 100));
-        binding.progressBar3Stars.setProgress((int) ((ratingCounts.get(3) / (float) totalReviews) * 100));
-        binding.progressBar2Stars.setProgress((int) ((ratingCounts.get(2) / (float) totalReviews) * 100));
-        binding.progressBar1Stars.setProgress((int) ((ratingCounts.get(1) / (float) totalReviews) * 100));
         binding.leaveReview.setOnClickListener(v -> leaveReview());
     }
 
