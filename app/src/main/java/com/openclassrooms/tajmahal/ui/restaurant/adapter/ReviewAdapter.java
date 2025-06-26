@@ -24,8 +24,8 @@ import java.util.List;
  * Adapter for displaying a list of reviews in a RecyclerView.
  */
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
-    private List<Review> reviewList;
-    private Context context;
+    private final List<Review> reviewsList;
+    private final Context context;
 
     /**
      * Constructs a new ReviewAdapter with the provided context.
@@ -34,18 +34,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
      */
     public ReviewAdapter(Context context) {
         this.context = context;
-        this.reviewList = new ArrayList<>();
+        this.reviewsList = new ArrayList<>();
     }
 
     /**
      * Updates the list of reviews displayed by the adapter.
      *
      * @param newReviewList The new list of reviews to be displayed.
+     *
      */
     public void updateReviews(List<Review> newReviewList) {
-        this.reviewList.clear();
+        this.reviewsList.clear();
         if (newReviewList != null) {
-            this.reviewList.addAll(newReviewList);
+            this.reviewsList.addAll(newReviewList);
         }
         notifyDataSetChanged();
     }
@@ -66,20 +67,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     }
 
     /**
-     *
+     * Binds the data to the ViewHolder at the specified position.
      * @param holder The ViewHolder which should be updated to represent the contents of the
      *        item at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        Review currentReview = reviewList.get(position);
+        Review currentReview = reviewsList.get(position);
         holder.bind(currentReview, context);
     }
 
+    /**
+     * 
+     * @return The total number of items in the data set held by the adapter.
+     */
     @Override
     public int getItemCount() {
-        return reviewList == null ? 0 : reviewList.size();
+        return reviewsList == null ? 0 : reviewsList.size();
     }
 
     /**
